@@ -1,6 +1,6 @@
 import numpy
 class Particles:
-    def __int__(self, positions: numpy.narray, charges: numpy.array, masses: numpy.array):
+    def __int__(self, positions: numpy.array, charges: numpy.array, masses: numpy.array):
         self.positions = positions
         self.charges =  charges
         self.masses = masses
