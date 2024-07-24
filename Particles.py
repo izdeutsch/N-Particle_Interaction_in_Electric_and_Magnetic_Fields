@@ -11,5 +11,5 @@ class Particles:
     def update(self, index: int, x: int, y: int, z: int) -> bool:
         if(index >= len(self.positions)):
             return False
-        self.positions[index] = numpy.asarray([x, y, x])
+        self.positions[index] = numpy.asarray([x, y, z])
         return True
