@@ -120,6 +120,7 @@ def get_fields2(particles: Particles) -> list[tuple]:
             pos2, q, _ = particles.at(j)
             distant = (((pos2[0] - pos1[0]) ** 2) + ((pos2[1] - pos1[1]) ** 2) + ((pos2[2] - pos1[2]) ** 2)) ** 0.5
             output.append(COULOMBS_CONSTANT * q / distant)
+            j = (j + 1) % n
     return output
     
 #-------------------------------------------------------------------------------------------------------------------------------------------
