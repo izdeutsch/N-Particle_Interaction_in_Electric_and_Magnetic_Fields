@@ -124,6 +124,7 @@ def get_fields2(particles: Particles) -> list[tuple]:
             e_mag = COULOMBS_CONSTANT * q / distant ** 2
             output.append((unit_vect[0] * e_mag, unit_vect[1] * e_mag, unit_vect[2] * e_mag))
             j = (j + 1) % n
+        i += 1
     return output
     
 #-------------------------------------------------------------------------------------------------------------------------------------------
