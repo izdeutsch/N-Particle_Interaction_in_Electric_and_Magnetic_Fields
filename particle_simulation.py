@@ -152,14 +152,23 @@ def find_pos_vel(velocity, fields, mass, charge): # input is the velocities @ t0
 
 '''
 Tom: suggestion:
+'''
 def get_function(particles):
     get_function.particles = particles
     def find_pos_vel(t, y, ext_field): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
+        output = []
         n = len(y)
-        
-I will finish the rest tomorrow.
-'''
-
+        i = 0
+        while(i < n):
+            get_function.particles[i].update(i, y[i], y[i + 1], y[i + 2])
+            output.append(y[i + 3])
+            output.append(y[i + 4])
+            output.append(y[i + 5])
+            output.append(y[i])
+            output.append(y[i + 1])
+            output.append(y[i + 2])
+        return output
+    return find_pos_vel
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # now to use the ode function to find the positions and velocities at t1 (end of step)
 initial_state=(position, velocity) # positions and velocities at t0
