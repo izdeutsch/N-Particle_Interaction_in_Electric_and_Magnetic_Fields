@@ -118,8 +118,11 @@ def get_fields2(particles: Particles) -> list[tuple]:
         pos1, _, _ = particles.at(i)
         while(j != i):
             pos2, q, _ = particles.at(j)
-            distant = (((pos2[0] - pos1[0]) ** 2) + ((pos2[1] - pos1[1]) ** 2) + ((pos2[2] - pos1[2]) ** 2)) ** 0.5
-            output.append(COULOMBS_CONSTANT * q / distant)
+            vect = [pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2]]
+            distant = ((vect[0] ** 2) + (vect[1] ** 2) + (vect[2] ** 2)) ** 0.5
+            unit_vect = [vect[0] / distant, vect[1] / distant, vect[2] / distant]
+            e_mag = COULOMBS_CONSTANT * q / distant ** 2
+            output.append((unit_vect[0] * e_mag, unit_vect[1] * e_mag, unit_vect[2] * e_mag))
             j = (j + 1) % n
     return output
     
