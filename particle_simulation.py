@@ -106,7 +106,7 @@ Tom: Suggested modifications:
 (please let me know what you think)
 '''
 '''
-Tom: you can explicitly require types in newer version of python. Static typing can reduce errors
+Tom: You can explicitly require types in newer versions of python. Static typing can reduce errors
 and improve readability.
 '''
 def get_fields2(particles: Particles) -> list[tuple]:
@@ -156,7 +156,7 @@ def get_function(particles):
     def find_pos_vel(t, y, ext_field): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
         n = len(y)
         
-
+I will finish the rest tomorrow.
 '''
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
