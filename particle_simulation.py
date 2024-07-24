@@ -167,6 +167,7 @@ def get_function(particles):
             output.append(y[i])
             output.append(y[i + 1])
             output.append(y[i + 2])
+            i += 1
         return output
     return find_pos_vel
 #-------------------------------------------------------------------------------------------------------------------------------------------
