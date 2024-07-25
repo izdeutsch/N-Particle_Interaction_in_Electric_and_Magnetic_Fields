@@ -163,17 +163,18 @@ def get_function(particles, get_fields):
     get_function.particles = particles
     get_function.get_fields = get_fields
     get_function.fields = get_function.get_fields(get_function.particles)
-    def find_pos_vel(t: float, y: list[float], ext_field: dict[tuple[float, float, float], tuple[float, float, float]]): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
+    def find_pos_vel(t: float, y: list[float], ext_field): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
         output = []
-        n = len(y)
+        n = len(y) - 5
         i = 0
         while(i < n):
-            pos, q, m = get_function.particles.at(i)
+            particle_index = i // 6
+            pos, q, m = get_function.particles.at(particle_index)
             output.append(y[i + 3])
             output.append(y[i + 4])
             output.append(y[i + 5])
-            ext_x, ext_y, ext_z = ext_field[pos]
-            e_x, e_y, e_z = get_function.fields[i]
+            ext_x, ext_y, ext_z = ext_field(*pos)
+            e_x, e_y, e_z = get_function.fields[particle_index]
             e_x += ext_x
             e_y = ext_y
             e_z += ext_z
@@ -183,8 +184,8 @@ def get_function(particles, get_fields):
             output.append(acc[0])
             output.append(acc[1])
             output.append(acc[2])
-            get_function.particles.update(i, y[i], y[i + 1], y[i + 2])
-            i += 1
+            get_function.particles.update(particle_index, y[i], y[i + 1], y[i + 2])
+            i += 6
         get_function.fields = get_function.get_fields(get_function.particles)
         return output
     return find_pos_vel
