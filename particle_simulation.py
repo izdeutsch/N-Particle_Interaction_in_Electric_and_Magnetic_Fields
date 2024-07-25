@@ -109,7 +109,7 @@ Tom: Suggested modifications:
 Tom: You can explicitly require types in newer versions of python. Static typing can reduce errors
 and improve readability.
 '''
-def get_fields2(particles: Particles) -> list[tuple]:
+def get_fields2(particles: Particles) -> list[tuple[float, float, float]]:
     output = []
     n = particles.size() #length of the particles
     i = 0 #index1
@@ -118,7 +118,7 @@ def get_fields2(particles: Particles) -> list[tuple]:
         pos1, _, _ = particles.at(i)
         while(j != i):
             pos2, q, _ = particles.at(j)
-            vect = [pos2[0] - pos1[0], pos2[1] - pos1[1], pos2[2] - pos1[2]]
+            vect = [pos1[0] - pos2[0], pos1[1] - pos2[1], pos1[2] - pos2[2]]
             distant = ((vect[0] ** 2) + (vect[1] ** 2) + (vect[2] ** 2)) ** 0.5
             unit_vect = [vect[0] / distant, vect[1] / distant, vect[2] / distant]
             e_mag = COULOMBS_CONSTANT * q / distant ** 2
@@ -153,21 +153,33 @@ def find_pos_vel(velocity, fields, mass, charge): # input is the velocities @ t0
 '''
 Tom: suggestion:
 '''
-def get_function(particles):
+def get_function(particles, get_fields):
     get_function.particles = particles
-    def find_pos_vel(t, y, ext_field): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
+    get_function.get_fields = get_fields
+    get_function.fields = get_function.get_fields(get_function.particles)
+    def find_pos_vel(t: float, y: list[float], ext_field: dict[tuple[float, float, float], tuple[float, float, float]]): #y: [pos_x1, pos_y1, post_z1, vel_x1, vel_y1, vel_z1, pos_x2, pos_y2....]
         output = []
         n = len(y)
         i = 0
         while(i < n):
-            get_function.particles[i].update(i, y[i], y[i + 1], y[i + 2])
+            (x, y, z), q, m = get_function.particles.at(i)
             output.append(y[i + 3])
             output.append(y[i + 4])
             output.append(y[i + 5])
-            output.append(y[i])
-            output.append(y[i + 1])
-            output.append(y[i + 2])
+            ext_x, ext_y, ext_z = ext_field[(x, y, z)]
+            e_x, e_y, e_z = get_function.fields[i]
+            e_x += ext_x
+            e_y = ext_y
+            e_z += ext_z
+            e_mag = (e_x ** 2 + e_y ** 2 + e_z ** 2) ** 0.5
+            acc_mag = e_mag * q / m
+            acc = (e_x * acc_mag / e_mag, e_y * acc_mag / e_mag, e_z * acc_mag / e_mag)
+            output.append(acc[0])
+            output.append(acc[1])
+            output.append(acc[2])
+            get_function.particles.update(i, y[i], y[i + 1], y[i + 2])
             i += 1
+        get_function.fields = get_function.get_fields(get_function.particles)
         return output
     return find_pos_vel
 #-------------------------------------------------------------------------------------------------------------------------------------------
