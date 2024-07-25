@@ -12,7 +12,7 @@ from matplotlib import animation
 from matplotlib.animation import FuncAnimation
 
 '''Tom: Use the Particles class instead'''
-import Particles
+from Particles import Particles
 
 '''Tom: Coulomb's constant'''
 COULOMBS_CONSTANT = 8.99*(10**9)
@@ -112,9 +112,11 @@ and improve readability.
 def get_fields2(particles: Particles) -> list[tuple[float, float, float]]:
     output = []
     n = particles.size() #length of the particles
+    temp = [[0, 0, 0] for _ in range(n)]
     i = 0 #index1
     while(i < n):
         j = (i + 1) % n #index2
+        curr = temp[i]
         pos1, _, _ = particles.at(i)
         while(j != i):
             pos2, q, _ = particles.at(j)
@@ -122,9 +124,13 @@ def get_fields2(particles: Particles) -> list[tuple[float, float, float]]:
             distant = ((vect[0] ** 2) + (vect[1] ** 2) + (vect[2] ** 2)) ** 0.5
             unit_vect = [vect[0] / distant, vect[1] / distant, vect[2] / distant]
             e_mag = COULOMBS_CONSTANT * q / distant ** 2
-            output.append((unit_vect[0] * e_mag, unit_vect[1] * e_mag, unit_vect[2] * e_mag))
+            curr[0] += unit_vect[0] * e_mag
+            curr[1] += unit_vect[1] * e_mag
+            curr[2] += unit_vect[2] * e_mag
             j = (j + 1) % n
         i += 1
+    for field in temp:
+        output.append((field[0], field[1], field[2]))
     return output
     
 #-------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,11 +168,11 @@ def get_function(particles, get_fields):
         n = len(y)
         i = 0
         while(i < n):
-            (x, y, z), q, m = get_function.particles.at(i)
+            pos, q, m = get_function.particles.at(i)
             output.append(y[i + 3])
             output.append(y[i + 4])
             output.append(y[i + 5])
-            ext_x, ext_y, ext_z = ext_field[(x, y, z)]
+            ext_x, ext_y, ext_z = ext_field[pos]
             e_x, e_y, e_z = get_function.fields[i]
             e_x += ext_x
             e_y = ext_y
@@ -184,11 +190,13 @@ def get_function(particles, get_fields):
     return find_pos_vel
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # now to use the ode function to find the positions and velocities at t1 (end of step)
+'''
 initial_state=(position, velocity) # positions and velocities at t0
 wanted_times=(step[i-1], step[i]) # going from start of step to end of step (would need to update this at the end of each looping
 answer=solve_ivp(find_pos_vel, y0=initial_state, method='RK45', t_span=wanted_times, rtol=1e-4) 
 pos_1[1]=answer[0]
 vel_1[1]=answer[1]
+'''
 # doing this for one single step (from i-1 (t0) to i(t1))
 
 # we then would put this whole thing in a loop for every single step since after each step the positions/velocities change, which in turn 
