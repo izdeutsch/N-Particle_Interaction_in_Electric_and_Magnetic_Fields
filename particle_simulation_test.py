@@ -44,8 +44,9 @@ def test_get_function1():
     #for i in answer.y:
        #print(i[5])
 
-    for i in range (1,59):
-        print(answer.y[i,5])
+    #for i in range (1,59):
+        #print(answer.y[5][i])
+    #print(answer.t)
 
 test1()
 #test2()
