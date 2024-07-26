@@ -8,7 +8,7 @@ from scipy.integrate import solve_ivp
 
 def test1():
     print("test1:")
-    positions = np.asarray([[0, 0, 0], [1, 2, 3]])
+    positions = np.asarray([[0, 0, 0], [0, 0, 100]])
     charge = np.asarray([1, -1])
     mass = np.asarray([1, 2])
     p = Particles(positions, charge, mass)
@@ -32,15 +32,21 @@ def test2():
 
 def test_get_function1():
     print("test_get_function1:")
-    positions = np.asarray([[0, 0, 0], [1, 2, 3]])
+    positions = np.asarray([[0, 0, 0], [0, 0, 100]])
     charge = np.asarray([1, -1])
     mass = np.asarray([1, 2])
     p = Particles(positions, charge, mass)
     get_pos_vel = get_function(p, get_fields2)
-    y0 = [0, 0, 0, 0, 0, 0, 1, 2, 3, 0, 0, 0]
-    answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, 10], rtol=1e-4, args=(lambda x, y, z : (0, 0, 0),))
-    print(answer.y)
+    y0 = [0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0] # pos1, vel1, pos2, vel2
+    answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, 1], rtol=1e-4, args=(lambda x, y, z : (0, 0, 0),))
+    #print(len(answer.y[0]))
+
+    #for i in answer.y:
+       #print(i[5])
+
+    for i in range (1,59):
+        print(answer.y[i,5])
 
 test1()
-test2()
+#test2()
 test_get_function1()
