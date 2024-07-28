@@ -25,6 +25,29 @@ def test2():
     assert p.at(1) == ((1, 2, 3), -1, 2)
     print("no error")
 
+def iterator_test():
+    print("\niterator_test:")
+    positions = np.asarray([[0, 0, 0], [1, 2, 3]])
+    charge = np.asarray([1, -1])
+    mass = np.asarray([1, 2])
+    particles = Particles(positions, charge, mass)
+    for particle in particles:
+        print(particle)
+
+def subscriptable_test():
+    print("\nsubscriptable_test:")
+    positions = np.asarray([[0, 0, 0], [1, 2, 3]])
+    charge = np.asarray([1, -1])
+    mass = np.asarray([1, 2])
+    particles = Particles(positions, charge, mass)
+    print(particles[0])
+    print(particles[1])
+    print(len(particles))
+    particles[0] = (1, 1, 1)
+    for particle in particles:
+        print(particle)
 
 test1()
 test2()
+iterator_test()
+subscriptable_test()

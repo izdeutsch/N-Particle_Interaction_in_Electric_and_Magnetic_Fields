@@ -13,3 +13,23 @@ class Particles:
             return False
         self.positions[index] = numpy.asarray([x, y, z])
         return True
+    #iterator
+    def __iter__(self):
+        self.index = 0
+        return self
+    def __next__(self):
+        if(self.index < len(self.positions)):
+            temp = self.index
+            self.index += 1
+            return self.at(temp)
+        raise StopIteration
+
+    #subscriptable
+    def __getitem__(self, index):
+        return self.at(index)
+
+    def __setitem__(self, index: int, value: tuple[float, float, float]):
+        self.update(index, *value)
+
+    def __len__(self):
+        return self.size()
