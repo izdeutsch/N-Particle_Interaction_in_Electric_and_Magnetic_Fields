@@ -38,7 +38,7 @@ def test_get_function1():
     p = Particles(positions, charge, mass)
     get_pos_vel = get_function(p, get_fields2)
     y0 = [0, 0, 0, 0, 0, 0, 0, 0, 100, 0, 0, 0] # pos1, vel1, pos2, vel2
-    answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, 1], rtol=1e-4, args=(lambda x, y, z : (0, 0, 0),))
+    answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, 1], rtol=1e-4, args=(lambda x, y, z : (0, 0, 0, 0, 0, 0),))
     #print(len(answer.y[0]))
 
     #for i in answer.y:
