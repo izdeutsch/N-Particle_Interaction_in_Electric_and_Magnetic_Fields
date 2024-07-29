@@ -117,25 +117,21 @@ def get_function(particles, get_fields):
             output.append(y[i + 4])
             output.append(y[i + 5])
       
-            # external electric field:
-            ext_x, ext_y, ext_z = ext_field(*pos)
+            # external electric and magnetic field:
+            ext_x, ext_y, ext_z, b_ext_x, b_ext_y, b_ext_z = ext_field(*pos)
             e_x, e_y, e_z = get_function.fields[particle_index]
             e_x += ext_x # adding external and point fields together
             e_y = ext_y
             e_z += ext_z
             e_mag = (e_x ** 2 + e_y ** 2 + e_z ** 2) ** 0.5 # magnitude of net E fields
 
-            # external magnetic field:
-            b_ext_x, b_ext_y, b_ext_z = ext_field(*pos) 
-            '''^^Isabella: we need to make sure to incorporate this into the input eventually when we run things'''
-            #b_mag = (b_ext_x ** 2 + b_ext_y ** 2 + b_ext_z ** 2) ** 0.5 # magnitude of magnetic field
-
             # finding the accelerations:
             acc_mag_e = (e_mag * q / m)  
             acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag)) # acceleration from net E fields
             acc_b = (q/m) * np.cross([b_ext_x, b_ext_y, b_ext_z], [y[i + 3], y[i + 4], y[i + 5]]) # acceleration from B fields
+
             
-            acc = (acc_e + acc_b) # net acceleration from E and B fields on the particle
+            acc = (acc_e[0]+acc_b[0], acc_e[1]+acc_b[1], acc_e[2]+acc_b[2]) # net acceleration from E and B fields on the particle
             output.append(acc[0]) # appending to the output the particle's acceleration (a_x, a_y, a_z)
             output.append(acc[1])
             output.append(acc[2])
