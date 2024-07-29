@@ -131,15 +131,12 @@ def get_function(particles, get_fields):
             #b_mag = (b_ext_x ** 2 + b_ext_y ** 2 + b_ext_z ** 2) ** 0.5 # magnitude of magnetic field
 
             # finding the accelerations:
-            acc_mag_e = (e_mag * q / m)  # magnitude of acceleration from E fields
-            acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag))
-            acc_b = (q/m) * np.cross([b_ext_x, b_ext_y, b_ext_z], velocity) # acceleration from B fields
-            ''' Isabella:
-            Have to figure out how to grab the velocities from each particle 
-            (eventually replace the variable velocity)--wasn't as sure how to do this with how y works so let me know!
-            '''
+            acc_mag_e = (e_mag * q / m)  
+            acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag)) # acceleration from net E fields
+            acc_b = (q/m) * np.cross([b_ext_x, b_ext_y, b_ext_z], [y[i + 3], y[i + 4], y[i + 5]]) # acceleration from B fields
+            
             acc = (acc_e + acc_b) # net acceleration from E and B fields on the particle
-            output.append(acc[0]) # appending to the output the particle's acceleration 
+            output.append(acc[0]) # appending to the output the particle's acceleration (a_x, a_y, a_z)
             output.append(acc[1])
             output.append(acc[2])
             get_function.particles.update(particle_index, y[i], y[i + 1], y[i + 2])
