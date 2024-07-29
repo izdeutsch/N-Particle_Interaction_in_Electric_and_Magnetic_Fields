@@ -38,10 +38,11 @@ class camera(pyglet.window.Window):
         return True
 
     def project(self, particle_position: tuple[float, float, float]) -> tuple[float, float]:
-        vect = (position[0] - particle_position[0], position[1] - particle_position[1], position[2] - particle_position[2])
-        dist = normal[0] * vect[0] + normal[1] * vect[1] + normal[2] * vect[2]
-        point = (particle_position[0] - dist * normal[0], particle_position[1] - dist * normal[1],
-                 particle_position[2] - dist * normal[2])
+        vect = (position[0] - particle_position[0], position[1] - particle_position[1], position[2] - particle_position[2]) # vector from camera origin to the point/particle
+        dist = normal[0] * vect[0] + normal[1] * vect[1] + normal[2] * vect[2] # vertical distance
+        point = (particle_position[0] + dist * normal[0], particle_position[1] + dist * normal[1],
+                 particle_position[2] + dist * normal[2])
+        ''' add or subtract? check with Krish Tues '''
         vect = (point[0] - position[0], point[1] - position[1], point[2] - position[2])
         x = pos_x[0] * vect[0] + pos_x[1] * vect[1] + pos_x[2] * vect[2]
         y = self.pos_y[0] * vect[0] + self.pos_y[1] * vect[1] + self.pos_y[2] * vect[2]
