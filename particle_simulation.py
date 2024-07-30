@@ -128,7 +128,7 @@ def get_function(particles, get_fields):
             # finding the accelerations:
             acc_mag_e = (e_mag * q / m)  
             acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag)) # acceleration from net E fields
-            acc_b = (q/m) * np.cross([b_ext_x, b_ext_y, b_ext_z], [y[i + 3], y[i + 4], y[i + 5]]) # acceleration from B fields
+            acc_b = (q/m) * np.cross([y[i + 3], y[i + 4], y[i + 5]], [b_ext_x, b_ext_y, b_ext_z]) # acceleration from B fields
 
             
             acc = (acc_e[0]+acc_b[0], acc_e[1]+acc_b[1], acc_e[2]+acc_b[2]) # net acceleration from E and B fields on the particle
