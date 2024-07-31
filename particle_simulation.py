@@ -134,7 +134,10 @@ def get_function(particles, get_fields):
 
             # incoporating a weak force (in the case of imminent collisions):
             '''Isabella: adding in weak force into play--work in progress
-                         might end up switching the location of this in the function'''
+                         might end up switching the location of this in the function
+                         
+                         
+                        NOTE: WILL HAVE TO MOVE THIS INTO GET_FIELDS FOR FUNCTION TO WORK'''
             if distant<=3: # for small enough distances between the particles (determine exact number later)
                 acc_weak=(1/m)*(1/math.log(y[i]), 1/math.log(y[i+1]), 1/math.log(y[i+2])) # test force, arbitrary
                 # acceleration that results from a sort of "weak force" applied so that the particle's don't collide
