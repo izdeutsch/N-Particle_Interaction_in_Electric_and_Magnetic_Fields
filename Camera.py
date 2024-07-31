@@ -42,7 +42,6 @@ class camera(pyglet.window.Window):
         dist = self.normal[0] * vect[0] + self.normal[1] * vect[1] + self.normal[2] * vect[2] # vertical distance
         point = (particle_position[0] + dist * self.normal[0], particle_position[1] + dist * self.normal[1],
                  particle_position[2] + dist * self.normal[2])
-        ''' add or subtract? check with Krish Tues '''
         vect = (point[0] - self.position[0], point[1] - self.position[1], point[2] - self.position[2])
         x = self.pos_x[0] * vect[0] + self.pos_x[1] * vect[1] + self.pos_x[2] * vect[2]
         y = self.pos_y[0] * vect[0] + self.pos_y[1] * vect[1] + self.pos_y[2] * vect[2]
