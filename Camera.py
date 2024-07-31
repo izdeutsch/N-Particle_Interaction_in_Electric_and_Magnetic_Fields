@@ -7,7 +7,7 @@ class camera(pyglet.window.Window):
     DOWN = 0b0010
     LEFT = 0b0100
     RIGHT = 0b1000
-    def __init__ (self, position, normal, pos_x, particles, radius = lambda x: 10, colorF = lambda x : (0, 0, 255) if x else (50, 225, 30), width=800, height=600, fps=False, *args, **kwargs):
+    def __init__ (self, position, normal, pos_x, particles, radius = lambda x: 10, colorF = lambda x : (0, 0, 255) if x > 0 else (50, 225, 30), width=800, height=600, fps=False, *args, **kwargs):
         super(camera, self).__init__(width, height, *args, **kwargs)
         self.position = position
         self.normal = normal
@@ -19,11 +19,11 @@ class camera(pyglet.window.Window):
         self.circles = []
 
         for particle in particles:
-            particle_position = particle.position
-            particle_charge = particle.charge
-            particle_mass = particle.mass
+            particle_position = particle[0]
+            particle_charge = particle[1]
+            particle_mass = particle[2]
             x, y = self.project(particle_position)
-            self.circles.append(shapes.Circle(x, y, radius(particle_mass), color=self.colorF(particle_charge)))
+            self.circles.append(shapes.Circle(x + self.width / 2, y + self.height / 2, radius(particle_mass), color=self.colorF(particle_charge)))
 
     def update_particles(self, positions: list[tuple[float, float, float]]) -> bool:
         if(len(positions) != self.particles.size()):
@@ -32,19 +32,19 @@ class camera(pyglet.window.Window):
         for i in range(len(self.circles)):
             circle = self.circles[i]
             x, y = self.project(positions[i])
-            circle.x = x
-            circle.y = y
+            circle.x = x + self.width / 2
+            circle.y = y + self.height / 2
 
         return True
 
     def project(self, particle_position: tuple[float, float, float]) -> tuple[float, float]:
-        vect = (position[0] - particle_position[0], position[1] - particle_position[1], position[2] - particle_position[2]) # vector from camera origin to the point/particle
-        dist = normal[0] * vect[0] + normal[1] * vect[1] + normal[2] * vect[2] # vertical distance
-        point = (particle_position[0] + dist * normal[0], particle_position[1] + dist * normal[1],
-                 particle_position[2] + dist * normal[2])
+        vect = (self.position[0] - particle_position[0], self.position[1] - particle_position[1], self.position[2] - particle_position[2]) # vector from camera origin to the point/particle
+        dist = self.normal[0] * vect[0] + self.normal[1] * vect[1] + self.normal[2] * vect[2] # vertical distance
+        point = (particle_position[0] + dist * self.normal[0], particle_position[1] + dist * self.normal[1],
+                 particle_position[2] + dist * self.normal[2])
         ''' add or subtract? check with Krish Tues '''
-        vect = (point[0] - position[0], point[1] - position[1], point[2] - position[2])
-        x = pos_x[0] * vect[0] + pos_x[1] * vect[1] + pos_x[2] * vect[2]
+        vect = (point[0] - self.position[0], point[1] - self.position[1], point[2] - self.position[2])
+        x = self.pos_x[0] * vect[0] + self.pos_x[1] * vect[1] + self.pos_x[2] * vect[2]
         y = self.pos_y[0] * vect[0] + self.pos_y[1] * vect[1] + self.pos_y[2] * vect[2]
         return (x, y)
 
