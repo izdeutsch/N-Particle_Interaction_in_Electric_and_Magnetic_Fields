@@ -2,6 +2,7 @@
 
 # general imports:
 import numpy as np
+import math
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import scipy
@@ -12,6 +13,7 @@ from matplotlib.animation import FuncAnimation
 from Particles import Particles # Particles class
 
 COULOMBS_CONSTANT = 8.99*(10**9)
+'''note: may have to change eventually for animation to make things easier--tbd'''
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # ORIGINAL/BASE CODE:
@@ -130,11 +132,20 @@ def get_function(particles, get_fields):
             acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag)) # acceleration from net E fields
             acc_b = (q/m) * np.cross([y[i + 3], y[i + 4], y[i + 5]], [b_ext_x, b_ext_y, b_ext_z]) # acceleration from B fields
 
-            
-            acc = (acc_e[0]+acc_b[0], acc_e[1]+acc_b[1], acc_e[2]+acc_b[2]) # net acceleration from E and B fields on the particle
-            output.append(acc[0]) # appending to the output the particle's acceleration (a_x, a_y, a_z)
-            output.append(acc[1])
-            output.append(acc[2])
+            # incoporating a weak force (in the case of imminent collisions):
+            '''Isabella: adding in weak force into play--work in progress
+                         might end up switching the location of this in the function'''
+            if distant<=3: # for small enough distances between the particles (determine exact number later)
+                acc_weak=(1/m)*(1/math.log(y[i]), 1/math.log(y[i+1]), 1/math.log(y[i+2])) # test force, arbitrary
+                # acceleration that results from a sort of "weak force" applied so that the particle's don't collide
+                ''' note: might need to figure out how to make this acceleration always oppose the direction of motion'''  
+                acc_net= (acc_e[0]+acc_b[0]+acc_weak[0], acc_e[1]+acc_b[1]+acc_weak[1], acc_e[2]+acc_b[2]+acc_weak[2])
+            else:
+                acc_net= (acc_e[0]+acc_b[0], acc_e[1]+acc_b[1], acc_e[2]+acc_b[2]) # net acceleration from E and B fields on the particle
+        
+            output.append(acc_net[0]) # appending to the output the particle's acceleration (a_x, a_y, a_z)
+            output.append(acc_net[1])
+            output.append(acc_net[2])
             get_function.particles.update(particle_index, y[i], y[i + 1], y[i + 2])
             i += 6
         get_function.fields = get_function.get_fields(get_function.particles)
