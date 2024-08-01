@@ -36,7 +36,7 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
     get_pos_vel = get_function(sim.p, get_fields2)
     y0 = []
     for i in range(len(particles)):
-        currP = particles[i]
+        currP = particles[i][0]
         currV = init_vels[i]
         y0.append(currP[0])
         y0.append(currP[1])
@@ -44,6 +44,7 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
         y0.append(currV[0])
         y0.append(currV[1])
         y0.append(currV[2])
+    print(y0)
     answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, max_t], rtol=1e-4,
                        args=(extern_fields,))
     n = len(answer.t)
