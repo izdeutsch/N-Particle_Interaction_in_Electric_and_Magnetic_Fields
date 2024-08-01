@@ -15,7 +15,7 @@ def get_user_inputs(simulator: Simulator):
     #lambda x,y,z: (x**2, y*2, z, x, y, z)
 
     n = len(masses)
-    assert len(charges) == n and len(positions) == n / 3 and len(positions) == len(velocities)
+    assert len(charges) == n and len(positions) == n * 3 and len(positions) == len(velocities)
 
     pos_list=[]
     vel_list=[]
