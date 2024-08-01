@@ -1,35 +1,35 @@
-import numpy
-import Particles
-import Camera
+from Camera import camera
+import time
 class Simulator:
 
-    def __init__(self, ps: Particles, eField: numpy.narray, bField: numpy.narray):
+    def __init__(self):
         self.steps = []
-        self.p = ps
-        self.eField = eField
-        self.bField = bField
+        self.p = [] #particles at the initial state
+        self.vels = []
+        self.extern_fields = lambda x, y, z: (0, 0, 0, 0, 0, 0)
         self.cameras = []
-    def update(self, p: Particles, e: numpy.narray, b: numpy.narray) -> None:
-        self.steps.append([p, e, b])
+    def update(self, p: tuple[float, list[tuple[float, float, float]]]) -> None: #t, x, y, z
+        self.steps.append(p)
     def animate(self)->None:
         for step in self.steps:
-            for camera in self.cameras:
-                camera.particles = step[0]
-                camera.set_visible(True)
-                camera.render()
+            for cam in self.cameras:
+                cam.render()
+                cam.update_particles(step[1])
+            time.sleep(step[0])
+
     def put_cameras(self, lst_cameras) -> bool:
-        for camera in lst_cameras:
-            if(len(camera) >= 3):
-                position = camera[0]
-                normal = camera[1]
-                pos_x = camera[2]
-                args = camera[3:]
-                self.cameras.append(Camera(position, normal, pos_x, self.p, *args))
+        for cam in lst_cameras:
+            if(len(cam) >= 3):
+                position = cam[0]
+                normal = cam[1]
+                pos_x = cam[2]
+                args = cam[3:]
+                self.cameras.append(camera(position, normal, pos_x, self.p, *args))
             else:
                 return False
         return True
-    def run(self, max_t: int, step_size: int, f, output: numpy.narray = None) -> bool:
-        temp = f(max_t, step_size, self.update())
+    def run(self, max_t: float, f, output: list = None) -> bool:
+        temp = f(max_t, self.p, self.vels, self.extern_fields, self.update)
         if(output != None):
             output.append(temp)
         return temp == None
