@@ -17,7 +17,7 @@ class Simulator:
                 cam.update_particles(step[1])
             time.sleep(step[0])
 
-    def put_cameras(self, lst_cameras) -> bool:
+    def put_cameras(self, lst_cameras: list[tuple[tuple[float, float, float],tuple[float, float, float],tuple[float, float, float]]]) -> bool:
         for cam in lst_cameras:
             if(len(cam) >= 3):
                 position = cam[0]
