@@ -133,7 +133,8 @@ def get_fields_collisions(particles: Particles) -> list[tuple[float, float, floa
                 curr[0] += unit_vect[0] * e_mag # E_x without weak
                 curr[1] += unit_vect[1] * e_mag # E_y without weak
                 curr[2] += unit_vect[2] * e_mag # E_z without weak
-            j = (j + 1) % n '''this should stay in this position/indent correct?'''
+            j = (j + 1) % n
+            '''this should stay in this position/indent correct?'''
         i += 1
     for field in temp:
         output.append((field[0], field[1], field[2])) # for each particle output the electric field (E_x, E_y, E_z)
