@@ -54,7 +54,7 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
         t = answer.t[i]
         for j in range(num_ps):
             index = j * 6
-            lst.append((answer.y[index], answer.y[index + 1], answer.y[index + 2]))
+            lst.append((answer.y[index][i], answer.y[index + 1][i], answer.y[index + 2][i]))
         update((t, lst))
     return answer
 
@@ -63,4 +63,5 @@ sim = Simulator()
 sim.setup(get_user_inputs)
 output = []
 sim.run(1, compute, output)
+sim.animate()
 print(output)
