@@ -31,9 +31,36 @@ def get_user_inputs(simulator: Simulator):
     simulator.extern_fields = ext_fields
     simulator.put_cameras(cam_setup)
 
+def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
+    f = open(file, "r")
+    masses = [float(mass) for mass in f.readline().split(",")]
+    charges = [float(charge) for charge in f.readline().split(",")]
+    positions = [float(pos) for pos in f.readline().split(",")]
+    velocities = [float(vel) for vel in f.readline().split(",")]
+    cam_setup = eval(f.readline())
+    ext_fields=eval(f.readline())
+    #lambda x,y,z: (x**2, y*2, z, x, y, z)
+
+    n = len(masses)
+    assert len(charges) == n and len(positions) == n * 3 and len(positions) == len(velocities)
+
+    pos_list=[]
+    vel_list=[]
+    i=0
+    while i<len(positions):
+        pos_list.append([positions[i], positions[i+1], positions[i+2]])
+        vel_list.append([velocities[i], velocities[i+1], velocities[i+2]])
+        i+=3
+
+    ps = Particles(np.asarray(pos_list), np.asarray(charges), np.asarray(masses))
+    simulator.p = ps
+    simulator.vels = vel_list
+    simulator.extern_fields = ext_fields
+    simulator.put_cameras(cam_setup)
+
 def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, float, float]], extern_fields, update):
     assert len(particles) == len(init_vels)
-    get_pos_vel = get_function(sim.p, get_fields2)
+    get_pos_vel = get_function(particles, get_fields2)
     y0 = []
     for i in range(len(particles)):
         currP = particles[i][0]
@@ -60,8 +87,10 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
 
 #just a test
 sim = Simulator()
-sim.setup(get_user_inputs)
+sim.setup(get_user_inputs2)
 output = []
 sim.run(1, compute, output)
 sim.animate()
 print(output)
+
+#get_user_inputs2(Simulator(), "input.txt")
