@@ -6,6 +6,7 @@ from particle_simulation import get_function
 from scipy.integrate import solve_ivp
 
 def get_user_inputs(simulator: Simulator):
+    ''' grabbing initial conditions based off of inputting into the terminal'''
     masses = [float(mass) for mass in input("Enter particle masses: ").split(",")]
     charges = [float(charge) for charge in input("Enter particle charges: ").split(",")]
     positions = [float(pos) for pos in input("Enter particle positions: ").split(",")]
@@ -25,6 +26,7 @@ def get_user_inputs(simulator: Simulator):
         vel_list.append([velocities[i], velocities[i+1], velocities[i+2]])
         i+=3
 
+    # putting the acquired information into use via the Particles class and into simulator:
     ps = Particles(np.asarray(pos_list), np.asarray(charges), np.asarray(masses))
     simulator.p = ps
     simulator.vels = vel_list
@@ -32,6 +34,7 @@ def get_user_inputs(simulator: Simulator):
     simulator.put_cameras(cam_setup)
 
 def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
+    '''obtaining initial conditions via file reading'''
     f = open(file, "r")
     masses = [float(mass) for mass in f.readline().split(",")]
     charges = [float(charge) for charge in f.readline().split(",")]
@@ -52,6 +55,7 @@ def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
         vel_list.append([velocities[i], velocities[i+1], velocities[i+2]])
         i+=3
 
+    # putting the acquired information into use via the Particles class and into simulator:
     ps = Particles(np.asarray(pos_list), np.asarray(charges), np.asarray(masses))
     simulator.p = ps
     simulator.vels = vel_list
@@ -60,11 +64,12 @@ def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
 
 def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, float, float]], extern_fields, update):
     assert len(particles) == len(init_vels)
-    get_pos_vel = get_function(particles, get_fields2)
+    get_pos_vel = get_function(particles, get_fields2) # grabbing positions, velocities
     y0 = []
     for i in range(len(particles)):
         currP = particles[i][0]
         currV = init_vels[i]
+        # appending current positions and velocities to y0 (initial condiditon input into solve_ivp)
         y0.append(currP[0])
         y0.append(currP[1])
         y0.append(currP[2])
