@@ -65,9 +65,10 @@ def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
     simulator.extern_fields = ext_fields
     simulator.put_cameras(cam_setup)
 
+'''NOTE: testing here for weak force interaction (get_fields_collisions)'''
 def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, float, float]], extern_fields, update):
     assert len(particles) == len(init_vels)
-    get_pos_vel = get_function(particles, get_fields2) # grabbing positions, velocities
+    get_pos_vel = get_function(particles, get_fields_collisions) # grabbing positions, velocities 
     y0 = []
     for i in range(len(particles)):
         currP = particles[i][0]
