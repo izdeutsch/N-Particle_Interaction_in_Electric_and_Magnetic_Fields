@@ -2,6 +2,7 @@ from Simulator import Simulator
 from Particles import Particles
 import numpy as np
 from particle_simulation import get_fields2
+from particle_simulation import get_fields_collisions
 from particle_simulation import get_function
 from scipy.integrate import solve_ivp
 
@@ -28,6 +29,8 @@ def get_user_inputs(simulator: Simulator):
 
     # putting the acquired information into use via the Particles class and into simulator:
     ps = Particles(np.asarray(pos_list), np.asarray(charges), np.asarray(masses))
+    for s in ps:
+        print(ps, 's')
     simulator.p = ps
     simulator.vels = vel_list
     simulator.extern_fields = ext_fields
@@ -94,8 +97,12 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
 sim = Simulator()
 sim.setup(get_user_inputs2)
 output = []
-sim.run(1, compute, output)
-sim.animate()
-print(output)
+sim.run(10, compute, output)
+#sim.animate()
+#time_length=len(output[0].t)
+#print(output[0].t[time_length-1])
+#print(output[0].t[294])
+#print(np.abs(-0.8208019600417122)) # collisions-get2 (get2 has t=221)
+#print(output[0].t[242])
 
 #get_user_inputs2(Simulator(), "input.txt")
