@@ -11,11 +11,19 @@ class Simulator:
     def update(self, p: tuple[float, list[tuple[float, float, float]]]) -> None: #t, x, y, z
         self.steps.append(p)
     def animate(self)->None:
+        animate=True
+        start_time=0
         for step in self.steps:
+            if not animate:
+                break
             for cam in self.cameras:
+                if not cam.alive:
+                    animate=False
+                    break
                 cam.render()
                 cam.update_particles(step[1])
-            time.sleep(step[0])
+            time.sleep(step[0]-start_time)
+            start_time = step[0]
 
     def put_cameras(self, lst_cameras: list[tuple[tuple[float, float, float],tuple[float, float, float],tuple[float, float, float]]]) -> bool:
         for cam in lst_cameras:
