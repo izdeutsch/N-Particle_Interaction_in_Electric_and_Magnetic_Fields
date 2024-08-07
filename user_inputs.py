@@ -68,7 +68,7 @@ def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
 '''NOTE: testing here for weak force interaction (get_fields_collisions)'''
 def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, float, float]], extern_fields, update):
     assert len(particles) == len(init_vels)
-    get_pos_vel = get_function(particles, get_fields_collisions) # grabbing positions, velocities 
+    get_pos_vel = get_function(particles, get_fields_collisions) # grabbing positions, velocities
     y0 = []
     for i in range(len(particles)):
         currP = particles[i][0]
@@ -80,7 +80,7 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
         y0.append(currV[0])
         y0.append(currV[1])
         y0.append(currV[2])
-    print(y0)
+    #print(y0)
     answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, max_t], rtol=1e-4,
                        args=(extern_fields,))
     n = len(answer.t)
@@ -99,6 +99,7 @@ sim = Simulator()
 sim.setup(get_user_inputs2)
 output = []
 sim.run(10, compute, output)
+sim.animate()
 #sim.animate()
 #time_length=len(output[0].t)
 #print(output[0].t[time_length-1])

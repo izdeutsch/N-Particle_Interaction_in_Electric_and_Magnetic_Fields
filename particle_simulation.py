@@ -162,12 +162,12 @@ def get_function(particles, get_fields):
             ext_x, ext_y, ext_z, b_ext_x, b_ext_y, b_ext_z = ext_field(*pos)
             e_x, e_y, e_z = get_function.fields[particle_index]
             e_x += ext_x # adding external and point fields together
-            e_y = ext_y
+            e_y += ext_y
             e_z += ext_z
             e_mag = (e_x ** 2 + e_y ** 2 + e_z ** 2) ** 0.5 # magnitude of net E fields
 
             # finding the accelerations:
-            acc_mag_e = (e_mag * q / m)  
+            acc_mag_e = (e_mag * q / m)
             acc_e = ((e_x * acc_mag_e / e_mag), (e_y * acc_mag_e / e_mag), (e_z * acc_mag_e / e_mag)) # acceleration from net E fields
             acc_b = (q/m) * np.cross([y[i + 3], y[i + 4], y[i + 5]], [b_ext_x, b_ext_y, b_ext_z]) # acceleration from B fields
             acc_net = (acc_e[0] + acc_b[0], acc_e[1] + acc_b[1], acc_e[2] + acc_b[2]) # net acceleration from E and B fields on the particle
