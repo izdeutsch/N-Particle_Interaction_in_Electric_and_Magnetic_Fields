@@ -9,7 +9,7 @@ class camera(pyglet.window.Window):
     DOWN = 0b0010
     LEFT = 0b0100
     RIGHT = 0b1000
-    def __init__ (self, position, normal, pos_x, particles, radius = lambda x: 10, colorF = lambda x : (0, 0, 255) if x > 0 else (50, 225, 30), width=800, height=600, fps=False, *args, **kwargs):
+    def __init__ (self, position, normal, pos_x, particles, radius = lambda x: 10, colorF = lambda x : (0, 0, 255) if x > 0 else (50, 225, 30), width=1500, height=1000, fps=False, *args, **kwargs):
         super(camera, self).__init__(width, height, *args, **kwargs)
         self.position = position
         self.normal = normal
