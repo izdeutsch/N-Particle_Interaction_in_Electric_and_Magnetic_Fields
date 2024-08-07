@@ -6,6 +6,9 @@ from particle_simulation import get_fields_collisions
 from particle_simulation import get_function
 from scipy.integrate import solve_ivp
 
+'''this is the final file that will run everything'''
+
+# first way to get user input:
 def get_user_inputs(simulator: Simulator):
     ''' grabbing initial conditions based off of inputting into the terminal'''
     masses = [float(mass) for mass in input("Enter particle masses: ").split(",")]
@@ -29,13 +32,12 @@ def get_user_inputs(simulator: Simulator):
 
     # putting the acquired information into use via the Particles class and into simulator:
     ps = Particles(np.asarray(pos_list), np.asarray(charges), np.asarray(masses))
-    for s in ps:
-        print(ps, 's')
     simulator.p = ps
     simulator.vels = vel_list
     simulator.extern_fields = ext_fields
     simulator.put_cameras(cam_setup)
 
+# second way to get user input (which is the format we used in our presentation)
 def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
     '''obtaining initial conditions via file reading'''
     f = open(file, "r")
@@ -65,10 +67,10 @@ def get_user_inputs2(simulator: Simulator, file: str = "input.txt"):
     simulator.extern_fields = ext_fields
     simulator.put_cameras(cam_setup)
 
-'''NOTE: testing here for weak force interaction (get_fields_collisions)'''
+# this is what will actually find the answers using solve_ivp
 def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, float, float]], extern_fields, update):
     assert len(particles) == len(init_vels)
-    get_pos_vel = get_function(particles, get_fields_collisions) # grabbing positions, velocities
+    get_pos_vel = get_function(particles, get_fields2) # grabbing positions, velocities; can specify whether you want to use get_fields2 or get_fields_collisions
     y0 = []
     for i in range(len(particles)):
         currP = particles[i][0]
@@ -80,7 +82,6 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
         y0.append(currV[0])
         y0.append(currV[1])
         y0.append(currV[2])
-    #print(y0)
     answer = solve_ivp(get_pos_vel, y0=y0, method='RK45', t_span=[0, max_t], rtol=1e-4,
                        args=(extern_fields,))
     n = len(answer.t)
@@ -94,17 +95,9 @@ def compute(max_t: float, particles: Particles, init_vels: list[tuple[float, flo
         update((t, lst))
     return answer
 
-#just a test
+# running everything and animating:
 sim = Simulator()
 sim.setup(get_user_inputs2)
 output = []
-sim.run(10, compute, output)
+sim.run(20, compute, output) # run for 20 seconds
 sim.animate()
-#sim.animate()
-#time_length=len(output[0].t)
-#print(output[0].t[time_length-1])
-#print(output[0].t[294])
-#print(np.abs(-0.8208019600417122)) # collisions-get2 (get2 has t=221)
-#print(output[0].t[242])
-
-#get_user_inputs2(Simulator(), "input.txt")
