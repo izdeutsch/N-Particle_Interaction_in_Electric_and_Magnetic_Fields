@@ -1,3 +1,5 @@
+# FOR DATAHUB/Krish grading: !pip install pyglet
+
 import pyglet
 from pyglet import shapes
 class camera(pyglet.window.Window):
