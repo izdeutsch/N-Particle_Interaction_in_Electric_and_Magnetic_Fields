@@ -32,7 +32,6 @@ def animation_test():
     positions = np.asarray([[0, 0, 0], [0, 0, 200]])
     charge = np.asarray([1, -1])
     mass = np.asarray([100000, 1000]) 
-    '''Isabella: note how mass has to be extremely large and similar to work, discuss with Krish/Amin velocities'''
     p = Particles(positions, charge, mass)
     get_pos_vel = get_function(p, get_fields2)
     y0 = [0, 0, 0, 0, 0, 0, 0, 0, 200, 0, -271.65, 0]  # pos1, vel1, pos2, vel2
