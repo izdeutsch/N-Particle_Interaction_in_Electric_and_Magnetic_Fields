@@ -118,9 +118,9 @@ def get_fields_collisions(particles: Particles) -> list[tuple[float, float, floa
 
             # incorporating the weak force:
             if distant<=5: # for small enough distances between the particles
-                
-                #weak_field = (vect[0] * COULOMBS_CONSTANT * np.abs(q) * q1/math.log(0.5 * distant + 1), vect[1] * COULOMBS_CONSTANT * np.abs(q) * q1/math.log(0.5 * distant + 1), vect[2] * COULOMBS_CONSTANT * np.abs(q) * q1/math.log(0.5 * distant + 1))
-                weak_field = (vect[0] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), vect[1] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), vect[2] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4))
+                weak_field = (vect[0] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), 
+                              vect[1] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), 
+                              vect[2] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4))
 
                 curr[0] += (unit_vect[0] * e_mag) + weak_field[0] # E_x with weak
                 curr[1] += (unit_vect[1] * e_mag) + weak_field[1] # E_y with weak
