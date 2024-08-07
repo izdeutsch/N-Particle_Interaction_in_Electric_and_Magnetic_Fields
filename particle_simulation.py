@@ -14,7 +14,8 @@ COULOMBS_CONSTANT = 8.99*(10**9)
 
 #-------------------------------------------------------------------------------------------------------------------------------------------
 # ORIGINAL/BASE CODE:
-# just for reference in case we need it
+# IGNORE DURING GRADING
+# just for reference in case we need it, theoretical basis for our revised code (see below)
 '''
 def get_fields(pos_part, pos_other1, pos_other2, q1, q_other1, q_other2, step): 
     # takes in the position of the desired particle (1xsteps*3), positions of the other particles and the other charges (Nx1)
@@ -110,14 +111,12 @@ def get_fields_collisions(particles: Particles) -> list[tuple[float, float, floa
         while(j != i):
             pos2, q, _ = particles.at(j) # position of other particle
             vect = [pos1[0] - pos2[0], pos1[1] - pos2[1], pos1[2] - pos2[2]]
-            #print('vector is', vect)
             distant = ((vect[0] ** 2) + (vect[1] ** 2) + (vect[2] ** 2)) ** 0.5 # distance between the particles
-            #print('distance is', distant)
             unit_vect = [vect[0] / distant, vect[1] / distant, vect[2] / distant]        
             e_mag = COULOMBS_CONSTANT * q / distant ** 2 # magnitude of the electric field produced
 
             # incorporating the weak force:
-            if distant<=5: # for small enough distances between the particles
+            if distant<=2: # for small enough distances between the particles
                 weak_field = (vect[0] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), 
                               vect[1] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4), 
                               vect[2] * COULOMBS_CONSTANT * np.abs(q) * q1/(distant**4))
