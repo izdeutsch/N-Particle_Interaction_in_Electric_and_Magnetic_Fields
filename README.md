@@ -1,3 +1,8 @@
+**N-Particle Interaction in Electric and Magnetic Fields**
+
+Particle interactions without the presence of external fields are characterized by Coulomb’s Law, depending on the distance between the particles, making it relatively simple to visualize their motion. However, when adding in external electric and magnetic fields into play, understanding particle motion intuitively becomes more difficult, now considering the Lorentz force and its effects. Through calculation, animation, and incorporating user input, our resulting simulation animates the motion of N particles interacting in the presence of these external fields, with the aim to help students better visualize particle motion in more complex cases than typically showcased.
+
+
 Description of each file:
 
 Camera.py--creates a Camera class in which the camera's position is setup, as well as updating particles and rendering them
